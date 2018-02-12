@@ -113,7 +113,7 @@ if __name__ == "__main__":
 ```
 ### View: ###
 
-#####Basics#####
+##### Basics #####
 
 Jinja2 template [header.html]
 ```html
@@ -169,7 +169,7 @@ div.header{
 }
 ```
 
-#####Rendering with templates (server-side)#####
+##### Rendering with templates (server-side) #####
 Jinja2 template example of *rendering server-side*: [quotes.html]
 ```html
 <html>
@@ -201,7 +201,7 @@ Jinja2 template example of *rendering server-side*: [quotes.html]
 </html>
 ```
 
-#####Rendering with JavaScript/jQuery/Ajax (client-side)#####
+##### Rendering with JavaScript/jQuery/Ajax (client-side) #####
 Alternative Jinja2 template example of *rendering client-side* with *ajax* and using *jQuery*: [quotes_ajax.html]
 ```html
 <html>
