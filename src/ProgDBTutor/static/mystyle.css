@@ -1,0 +1,50 @@
+//Author: Len Feremans
+//Simple css
+p{
+   font-family:"font-family: Helvetica, Arial, sans-serif!important";
+   font-size: 12pt;
+}
+h1{
+   font-family:"font-family: Helvetica, Arial, sans-serif!important";
+   font-size: 20pt;
+}
+//css applicable to all elements that have class=smalltitle
+.smalltitle{
+	font-weight:bold;
+	font-size:16pt;
+}
+//larger-font to all elements that have class=larger
+.larger{
+	font-size:14pt;
+}
+//applicable to all div elements that have class borderme
+div.borderme{
+	border: 1px solid darkgrey; 
+	padding:10px;
+	padding-bottom: 20px;
+}
+//applicable to div with class header
+div.header{
+	top:0;
+	left:0;
+	background-color:  #efefef;
+	width:100%; 
+	height:25px; 
+	padding: 0px;
+	margin:0 px;
+	margin-bottom: 20px;
+	font-family:"font-family: Helvetica, Arial, sans-serif!important";
+    font-size: 14pt;
+}
+div.footer{
+	//used absolute position relative to bottom-left
+	position:absolute;
+	background-color:  lightgrey;
+	bottom:0;
+	left:0;
+	width:100%; 
+	height:30px; 
+	padding: 0px;
+	font-family:"font-family: Helvetica, Arial, sans-serif!important";
+    font-size: 15pt;
+}

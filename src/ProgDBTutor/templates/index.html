@@ -1,0 +1,29 @@
+<html>
+<head>
+	<title>{{app_data['app_name']}}</title>
+	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
+</head>
+<body>	
+	{% include 'header.html' %} 
+    <div>
+    		
+    		<div class="borderme">
+    			<div class="smalltitle">Test REST api:</div>
+    			GET <a class="larger" href="/quotes">/quotes</a><br/>
+    			GET <a class="larger" href="/quote/1">/quote/1</a> <br/>
+    			<form action="/addquote" method="post">
+    				POST <a class="reststyle"> /addquote?text=X&author=Y</a> 
+           		&nbsp;Text: <input type ="text" name="text"/>
+           		&nbsp;Author: <input type ="text" name="author"/>
+           		<input type = "submit"/>
+         	</form>  
+    		</div>
+    		<div class="borderme">
+    			<div class="smalltitle">User interface:</div>
+    			<a class="larger" href="/show_quotes">show quotes (classic)</a><br/>
+    			<a class="larger" href="/show_quotes_ajax">show quotes (ajax)</a>
+    		</div>
+    </div>
+    {% include 'footer.html' %}   
+</body>
+</html>

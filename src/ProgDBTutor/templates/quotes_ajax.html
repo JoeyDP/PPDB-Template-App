@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>{{app_data['app_name']}}</title>
+	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
+	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
+	<script>
+function load_quotes(f){
+	$.ajax({url: "/quotes", type: "GET", dataType: "json"}).done(f);
+}
+
+function save_quote(text,author,f){
+	$.ajax({url: "/addquote", type: "POST", data: {'text': text, 'author': author}});
+}
+
+function render_quotes(data){
+	$("#quotes").empty();
+  	for(var i=0;i<data.length;i++){
+  		$("#quotes").append(
+  				'<div style="padding: 10px"><span style="font-style: italic;">' 
+  				  + data[i]['text'] 
+  				  + '</span> -- ' 
+  				  + data[i]['author'] 
+  				  + '</div>');
+  	}
+}
+	
+$(document).ready(function() {	
+	 load_quotes(render_quotes);
+	 $("#addQuoteForm").on("submit", function(event){
+	 	event.preventDefault();
+	 	var text = $("#text").val();
+	 	var author = $("#author").val();
+	 	save_quote(text,author);
+	 	load_quotes(render_quotes);
+	 });
+});
+	</script>
+</head>
+<body>	
+	{% include 'header.html' %} 
+    <div>
+    		<a href="/">show main</a>
+    		<div class="borderme">
+    			<div class="smalltitle">Quotes:</div>
+    			<div id="quotes"/>		
+      	</div>
+      	<form id="addQuoteForm" action="/" method="post">
+    			Text: <input type ="text" name="text" id="text"/><br/>
+           	Author: <input type ="text" name="author" id="author"/><br/>
+           	<input type ="submit" value="save"/> <span id="status">
+         </form>  
+    </div>
+    {% include 'footer.html' %}   
+</body>
+</html>

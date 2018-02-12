@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title>{{app_data['app_name']}}</title>
+	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
+</head>
+<body>	
+	{% include 'header.html' %} 
+    <div>
+    		<a href="/">show main</a>
+    		<div class="borderme">
+    			<div class="smalltitle">Quotes:</div>
+    			{% for quote_obj in quote_objects %}
+    				 <div style="padding: 10px"><span style="font-style: italic;">{{quote_obj.text}}</span>
+    				 		-- {{quote_obj.author}}
+    				 </div>
+    			{% endfor %}
+  			</div>  			
+    		</div>
+    		<form action="/addquote" method="post">
+    			Text: <input type ="text" name="text"/><br/>
+           	Author: <input type ="text" name="author"/><br/>
+           	<input type ="submit" value="save"/>
+         </form>  
+    </div>
+    {% include 'footer.html' %}   
+</body>
+</html>
