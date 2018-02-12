@@ -10,16 +10,19 @@ The implementation is written in Python.
 
 To create the database:
 > psql -d postgres -U postgres -f sql/create_database.sql
+>
 > psql -d dbtutor -U len -f sql/schema.sql
 
 To run development server
 > cd src/ProgDBTutor
+>
 > python app.py
 
 Then visit http://localhost:5000
 
 To run unit tests:
 > cd src/ProgDBTutor
+>
 > nosetests
 
 ### Dependencies ###
@@ -30,8 +33,10 @@ Python modules (install using "pip install name"):
 Postgres database (install, then make sure psql is running)
 
 ### Code ###
-Data:
-- Example of data-access pattern, see /ProgDBTutor/quote_data_access.py
+
+### Data layer: ###
+Example of data-access pattern [quote_data_access.py] for executing *SQL* queries from python using *psycopg2*
+
 ```python
 #Data Access Object pattern: see http://best-practice-software-engineering.ifs.tuwien.ac.at/patterns/dao.html
 #For clean separation of concerns, create separate data layer that abstracts all data access to/from RDBM
@@ -106,7 +111,8 @@ class QuoteDataAccess:
             self.dbconnect.rollback()
             raise Exception('Unable to save quote!')
 ```
-- Example of unit test, see /ProgDBTutor/test_quote_data_access.py
+
+Example of *unit test* of data access code, see [test_quote_data_access.py]
 ```python
 #Author: Len Feremans
 #Unit tests for QuoteDataAccess 
@@ -156,12 +162,12 @@ class TestQuoteDataAccess(unittest.TestCase):
         connection.close()
 ```
 
-Service:
-- Example of REST api: see /ProgDBTutor/app.py
-- Example of rendering views: see also /ProgDBTutor/app.py
+### Web Service ###
+Example of implementation REST API and main view controller in *python* using *Flask* library, see [app.py].
+
 ```python
 ### TUTORIAL Len Feremans
-###see tutor https://code.tutsplus.com/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql--cms-22972
+### see also Flask tutor https://code.tutsplus.com/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql--cms-22972
 from flask import Flask
 from flask.templating import render_template
 from flask import request, session, jsonify
@@ -226,97 +232,26 @@ def show_quotes_ajax():
 if __name__ == "__main__":
     app.run()
 ```
-View:
-- Example of rendering server-side: templates/quotes.html
+### View: ###
+
+#####Basics#####
+
+Jinja2 template [header.html]
 ```html
-<html>
-<head>
-	<title>{{app_data['app_name']}}</title>
-	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
-</head>
-<body>	
-	{% include 'header.html' %} 
-    <div>
-    		<a href="/">show main</a>
-    		<div class="borderme">
-    			<div class="smalltitle">Quotes:</div>
-    			{% for quote_obj in quote_objects %}
-    				 <div style="padding: 10px"><span style="font-style: italic;">{{quote_obj.text}}</span>
-    				 		-- {{quote_obj.author}}
-    				 </div>
-    			{% endfor %}
-  			</div>  			
-    		</div>
-    		<form action="/addquote" method="post">
-    			Text: <input type ="text" name="text"/><br/>
-           	Author: <input type ="text" name="author"/><br/>
-           	<input type ="submit" value="save"/>
-         </form>  
-    </div>
-    {% include 'footer.html' %}   
-</body>
-</html>
+<div class="header">
+	<h1>{{app_data['app_name']}}</h1>
+</div>
 ```
 
-- Example of rendering client-side with ajax and using jQuery: see quotes_ajax.html 
+Jinja2 template [footer.html]
 ```html
-<html>
-<head>
-	<title>{{app_data['app_name']}}</title>
-	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
-	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
-	<script>
-function load_quotes(f){
-	$.ajax({url: "/quotes", type: "GET", dataType: "json"}).done(f);
-}
-
-function save_quote(text,author,f){
-	$.ajax({url: "/addquote", type: "POST", data: {'text': text, 'author': author}});
-}
-
-function render_quotes(data){
-	$("#quotes").empty();
-  	for(var i=0;i<data.length;i++){
-  		$("#quotes").append(
-  				'<div style="padding: 10px"><span style="font-style: italic;">' 
-  				  + data[i]['text'] 
-  				  + '</span> -- ' 
-  				  + data[i]['author'] 
-  				  + '</div>');
-  	}
-}
-	
-$(document).ready(function() {	
-	 load_quotes(render_quotes);
-	 $("#addQuoteForm").on("submit", function(event){
-	 	event.preventDefault();
-	 	var text = $("#text").val();
-	 	var author = $("#author").val();
-	 	save_quote(text,author);
-	 	load_quotes(render_quotes);
-	 });
-});
-	</script>
-</head>
-<body>	
-	{% include 'header.html' %} 
-    <div>
-    		<a href="/">show main</a>
-    		<div class="borderme">
-    			<div class="smalltitle">Quotes:</div>
-    			<div id="quotes"/>		
-      	</div>
-      	<form id="addQuoteForm" action="/" method="post">
-    			Text: <input type ="text" name="text" id="text"/><br/>
-           	Author: <input type ="text" name="author" id="author"/><br/>
-           	<input type ="submit" value="save"/> <span id="status">
-         </form>  
-    </div>
-    {% include 'footer.html' %}   
-</body>
-</html>
+<div class="footer">
+    &copy; Len Feremans, Universiteit Antwerpen, 2018
+    <img src="{{ url_for('static',filename='ua_logo.png') }}" style="float: right; height:30px;"/>
+</div>
 ```
-- Example of css file: ProgDBTutor/static/mystyle.css
+
+CSS file: [mystyle.css]
 ```css
 //Author: Len Feremans
 //Simple css
@@ -370,23 +305,8 @@ div.footer{
 }
 ```
 
-- Mores examples of Jinja2 (http://jinja.pocoo.org/docs/2.10/) templates with include and for loops.
-Footer:
-```html
-<div class="footer">
-    &copy; Len Feremans, Universiteit Antwerpen, 2018
-    <img src="{{ url_for('static',filename='ua_logo.png') }}" style="float: right; height:30px;"/>
-</div>
-```
-
-Header:
-```html
-<div class="header">
-	<h1>{{app_data['app_name']}}</h1>
-</div>
-```
-
-Index:
+#####Rendering with templates (server-side)#####
+Jinja2 template example of *rendering server-side*: [quotes.html]
 ```html
 <html>
 <head>
@@ -394,25 +314,83 @@ Index:
 	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
 </head>
 <body>	
+    {% include 'header.html' %} 
+    <div>
+    		<a href="/">show main</a>
+    		<div class="borderme">
+    			<div class="smalltitle">Quotes:</div>
+    			{% for quote_obj in quote_objects %}
+    				 <div style="padding: 10px"><span style="font-style: italic;">{{quote_obj.text}}</span>
+    				 		-- {{quote_obj.author}}
+    				 </div>
+    			{% endfor %}
+  			</div>  			
+    		</div>
+    		<form action="/addquote" method="post">
+    			Text: <input type ="text" name="text"/><br/>
+           	Author: <input type ="text" name="author"/><br/>
+           	<input type ="submit" value="save"/>
+         </form>  
+    </div>
+    {% include 'footer.html' %}   
+</body>
+</html>
+```
+
+#####Rendering with JavaScript/jQuery/Ajax (client-side)#####
+Alternative Jinja2 template example of *rendering client-side* with *ajax* and using *jQuery*: [quotes_ajax.html]
+```html
+<html>
+<head>
+	<title>{{app_data['app_name']}}</title>
+	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
+	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
+	<script>
+function load_quotes(f){
+	$.ajax({url: "/quotes", type: "GET", dataType: "json"}).done(f);
+}
+
+function save_quote(text,author,f){
+	$.ajax({url: "/addquote", type: "POST", data: {'text': text, 'author': author}});
+}
+
+function render_quotes(data){
+	$("#quotes").empty();
+  	for(var i=0;i<data.length;i++){
+  		$("#quotes").append(
+  				'<div style="padding: 10px"><span style="font-style: italic;">' 
+  				  + data[i]['text'] 
+  				  + '</span> -- ' 
+  				  + data[i]['author'] 
+  				  + '</div>');
+  	}
+}
+	
+$(document).ready(function() {	
+	 load_quotes(render_quotes);
+	 $("#addQuoteForm").on("submit", function(event){
+	 	event.preventDefault();
+	 	var text = $("#text").val();
+	 	var author = $("#author").val();
+	 	save_quote(text,author);
+	 	load_quotes(render_quotes);
+	 });
+});
+	</script>
+</head>
+<body>	
 	{% include 'header.html' %} 
     <div>
-    		
+    		<a href="/">show main</a>
     		<div class="borderme">
-    			<div class="smalltitle">Test REST api:</div>
-    			GET <a class="larger" href="/quotes">/quotes</a><br/>
-    			GET <a class="larger" href="/quote/1">/quote/1</a> <br/>
-    			<form action="/addquote" method="post">
-    				POST <a class="reststyle"> /addquote?text=X&author=Y</a> 
-           		&nbsp;Text: <input type ="text" name="text"/>
-           		&nbsp;Author: <input type ="text" name="author"/>
-           		<input type = "submit"/>
-         	</form>  
-    		</div>
-    		<div class="borderme">
-    			<div class="smalltitle">User interface:</div>
-    			<a class="larger" href="/show_quotes">show quotes (classic)</a><br/>
-    			<a class="larger" href="/show_quotes_ajax">show quotes (ajax)</a>
-    		</div>
+    			<div class="smalltitle">Quotes:</div>
+    			<div id="quotes"/>		
+      	</div>
+      	<form id="addQuoteForm" action="/" method="post">
+    			Text: <input type ="text" name="text" id="text"/><br/>
+           	Author: <input type ="text" name="author" id="author"/><br/>
+           	<input type ="submit" value="save"/> <span id="status">
+         </form>  
     </div>
     {% include 'footer.html' %}   
 </body>
