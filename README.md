@@ -1,9 +1,11 @@
 # README #
-Implementation of Example web-app in python with database
-by Len Feremans, data scientist at the University of Antwerp (Belgium) within the Adrem data labs research group.
+Implementation of example web application in python with relational database. By Len Feremans assistant at the University of Antwerp (Belgium) within the Adrem data labs research group.
 
 ### What is this repository for? ###
-Tutorial for Programming Project Database
+Tutorial for Programming Project Database students, or persons interested in creating a web application in python.
+
+We depend on the following technologies:
+![alt text](https://github.com/lfereman/tutorial/blob/master/doc/stack.png "Stack")
 
 ### Quick start ###
 The implementation is written in Python.
@@ -32,138 +34,12 @@ Python modules (install using "pip install name"):
  
 Postgres database (install, then make sure psql is running)
 
+### Result ###
+![alt text](https://github.com/lfereman/tutorial/blob/master/doc/dbtutor_index.png "Index page")
+![alt text](https://github.com/lfereman/tutorial/blob/master/doc/dbtutor_rest.png "Output rest service")
+![alt text](https://github.com/lfereman/tutorial/blob/master/doc/dbtutor_quotes.png "Viewing and adding quotes")
+
 ### Code ###
-
-### Data layer: ###
-Example of data-access pattern [quote_data_access.py] for executing *SQL* queries from python using *psycopg2*
-
-```python
-#Data Access Object pattern: see http://best-practice-software-engineering.ifs.tuwien.ac.at/patterns/dao.html
-#For clean separation of concerns, create separate data layer that abstracts all data access to/from RDBM
-#
-#Depends on psycopg2 librarcy: see (tutor) https://wiki.postgresql.org/wiki/Using_psycopg2_with_PostgreSQL
-import psycopg2
-
-class DBConnection:
-    def __init__(self,dbname,dbuser,dbpass,dbhost):
-        try:
-            self.conn = psycopg2.connect("dbname='{}' user='{}' host='{}' password='{}'".format(dbname,dbuser,dbhost, dbpass))
-        except:
-            print('ERROR: Unable to connect to database')
-            raise Exception('Unable to connect to database')
-        
-    def close(self):
-        self.conn.close()
-        
-    def get_connection(self):
-        return self.conn
-    
-    def get_cursor(self):
-        return self.conn.cursor()
-    
-    def commit(self):
-        return self.conn.commit()
-    
-    def rollback(self):
-        return self.conn.rollback()
-         
-class Quote:
-    def __init__(self, iden, text, author):
-        self.id = iden
-        self.text = text
-        self.author = author
-        
-    def to_dct(self):
-        return {'id': self.id, 'text': self.text, 'author': self.author}
-    
-class QuoteDataAccess:
-    
-    def __init__(self, dbconnect):
-        self.dbconnect = dbconnect
-       
-    def get_quotes(self):
-        cursor = self.dbconnect.get_cursor()
-        cursor.execute('SELECT id, text, author FROM Quote')  
-        quote_objects = list()
-        for row in cursor:
-            quote_obj = Quote(row[0],row[1],row[2]) 
-            quote_objects.append(quote_obj)
-        return quote_objects
-    
-    def get_quote(self, iden):
-        cursor = self.dbconnect.get_cursor()
-        cursor.execute('SELECT id, text, author FROM Quote WHERE id=%s', (iden,))         #See also SO: https://stackoverflow.com/questions/45128902/psycopg2-and-sql-injection-security
-        row = cursor.fetchone()   
-        return Quote(row[0],row[1],row[2])
-     
-    def add_quote(self, quote_obj): 
-        cursor = self.dbconnect.get_cursor()
-        try:
-            cursor.execute('INSERT INTO Quote(text,author) VALUES(%s,%s)', (quote_obj.text, quote_obj.author,))
-            #get id and return updated object
-            cursor.execute('SELECT LASTVAL()')
-            iden = cursor.fetchone()[0]
-            quote_obj.id = iden
-            self.dbconnect.commit()
-            return quote_obj
-        except:
-            self.dbconnect.rollback()
-            raise Exception('Unable to save quote!')
-```
-
-Example of *unit test* of data access code, see [test_quote_data_access.py]
-```python
-#Author: Len Feremans
-#Unit tests for QuoteDataAccess 
-import unittest
-from quote_data_access import DBConnection, QuoteDataAccess, Quote
-from config import *
-
-class TestQuoteDataAccess(unittest.TestCase):
-
-    def _connect(self):
-        connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] ,dbpass=config_data['dbpass'], dbhost=config_data['dbhost'])
-        return connection
-    
-    def test_connection(self):
-        connection = self._connect()
-        connection.close()
-        print("Connection: ok")
-        
-    def test_qet_quote(self):
-        connection = self._connect()
-        quote_dao = QuoteDataAccess(dbconnect=connection)
-        quote_obj=quote_dao.get_quote(iden=1)
-        print(quote_obj)
-        self.assertEqual('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.'.upper(), 
-                         quote_obj.text.upper())
-        connection.close();
-    
-    ....
-```
-
-Example of database sql files, see [create_database.sql].
-```sql
-CREATE ROLE len WITH LOGIN PASSWORD 'len';
-ALTER ROLE len CREATEDB;
-CREATE DATABASE dbtutor owner len;
-```
-
-SQL schema and example data, see [schema.sql].
-```sql
-CREATE TABLE Quote(
-	id SERIAL PRIMARY KEY,
-	text VARCHAR(256) UNIQUE NOT NULL,
-	author VARCHAR(128)
-);
-
-INSERT INTO Quote(text,author) VALUES('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.','John Louis von Neumann');
-INSERT INTO Quote(text,author) VALUES('Computer science is no more about computers than astronomy is about telescopes','Edsger Dijkstra');
-INSERT INTO Quote(text,author) VALUES('To understand recursion you must first understand recursion..', 'Unknown');
-INSERT INTO Quote(text,author) VALUES('You look at things that are and ask, why? I dream of things that never were and ask, why not?','Unknown');
-INSERT INTO Quote(text,author) VALUES('Mathematics is the key and door to the sciences.', 'Galileo Galilei');
-INSERT INTO Quote(text,author) VALUES('Not everyone will understand your journey. Thats fine. Its not their journey to make sense of. Its yours.','Unknown');
-```
 
 ### Web Service ###
 Example of implementation REST API and main view controller in *python* using *Flask* library, see [app.py].
@@ -383,4 +259,135 @@ $(document).ready(function() {
     {% include 'footer.html' %}   
 </body>
 </html>
+```
+
+### Data layer: ###
+Example of data-access pattern [quote_data_access.py] for executing *SQL* queries from python using *psycopg2*
+
+```python
+#Data Access Object pattern: see http://best-practice-software-engineering.ifs.tuwien.ac.at/patterns/dao.html
+#For clean separation of concerns, create separate data layer that abstracts all data access to/from RDBM
+#
+#Depends on psycopg2 librarcy: see (tutor) https://wiki.postgresql.org/wiki/Using_psycopg2_with_PostgreSQL
+import psycopg2
+
+class DBConnection:
+    def __init__(self,dbname,dbuser,dbpass,dbhost):
+        try:
+            self.conn = psycopg2.connect("dbname='{}' user='{}' host='{}' password='{}'".format(dbname,dbuser,dbhost, dbpass))
+        except:
+            print('ERROR: Unable to connect to database')
+            raise Exception('Unable to connect to database')
+        
+    def close(self):
+        self.conn.close()
+        
+    def get_connection(self):
+        return self.conn
+    
+    def get_cursor(self):
+        return self.conn.cursor()
+    
+    def commit(self):
+        return self.conn.commit()
+    
+    def rollback(self):
+        return self.conn.rollback()
+         
+class Quote:
+    def __init__(self, iden, text, author):
+        self.id = iden
+        self.text = text
+        self.author = author
+        
+    def to_dct(self):
+        return {'id': self.id, 'text': self.text, 'author': self.author}
+    
+class QuoteDataAccess:
+    
+    def __init__(self, dbconnect):
+        self.dbconnect = dbconnect
+       
+    def get_quotes(self):
+        cursor = self.dbconnect.get_cursor()
+        cursor.execute('SELECT id, text, author FROM Quote')  
+        quote_objects = list()
+        for row in cursor:
+            quote_obj = Quote(row[0],row[1],row[2]) 
+            quote_objects.append(quote_obj)
+        return quote_objects
+    
+    def get_quote(self, iden):
+        cursor = self.dbconnect.get_cursor()
+        cursor.execute('SELECT id, text, author FROM Quote WHERE id=%s', (iden,))         #See also SO: https://stackoverflow.com/questions/45128902/psycopg2-and-sql-injection-security
+        row = cursor.fetchone()   
+        return Quote(row[0],row[1],row[2])
+     
+    def add_quote(self, quote_obj): 
+        cursor = self.dbconnect.get_cursor()
+        try:
+            cursor.execute('INSERT INTO Quote(text,author) VALUES(%s,%s)', (quote_obj.text, quote_obj.author,))
+            #get id and return updated object
+            cursor.execute('SELECT LASTVAL()')
+            iden = cursor.fetchone()[0]
+            quote_obj.id = iden
+            self.dbconnect.commit()
+            return quote_obj
+        except:
+            self.dbconnect.rollback()
+            raise Exception('Unable to save quote!')
+```
+
+Example of *unit test* of data access code, see [test_quote_data_access.py]
+```python
+#Author: Len Feremans
+#Unit tests for QuoteDataAccess 
+import unittest
+from quote_data_access import DBConnection, QuoteDataAccess, Quote
+from config import *
+
+class TestQuoteDataAccess(unittest.TestCase):
+
+    def _connect(self):
+        connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] ,dbpass=config_data['dbpass'], dbhost=config_data['dbhost'])
+        return connection
+    
+    def test_connection(self):
+        connection = self._connect()
+        connection.close()
+        print("Connection: ok")
+        
+    def test_qet_quote(self):
+        connection = self._connect()
+        quote_dao = QuoteDataAccess(dbconnect=connection)
+        quote_obj=quote_dao.get_quote(iden=1)
+        print(quote_obj)
+        self.assertEqual('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.'.upper(), 
+                         quote_obj.text.upper())
+        connection.close();
+    
+    ....
+```
+
+Example of database sql files, see [create_database.sql].
+```sql
+CREATE ROLE len WITH LOGIN PASSWORD 'len';
+ALTER ROLE len CREATEDB;
+CREATE DATABASE dbtutor owner len;
+```
+
+SQL schema and example data, see [schema.sql].
+```sql
+CREATE TABLE Quote(
+	id SERIAL PRIMARY KEY,
+	text VARCHAR(256) UNIQUE NOT NULL,
+	author VARCHAR(128)
+);
+
+INSERT INTO Quote(text,author) VALUES('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.','John Louis von Neumann');
+INSERT INTO Quote(text,author) VALUES('Computer science is no more about computers than astronomy is about telescopes','Edsger Dijkstra');
+INSERT INTO Quote(text,author) VALUES('To understand recursion you must first understand recursion..', 'Unknown');
+INSERT INTO Quote(text,author) VALUES('You look at things that are and ask, why? I dream of things that never were and ask, why not?','Unknown');
+INSERT INTO Quote(text,author) VALUES('Mathematics is the key and door to the sciences.', 'Galileo Galilei');
+INSERT INTO Quote(text,author) VALUES('Not everyone will understand your journey. Thats fine. Its not their journey to make sense of. Its yours.','Unknown');
 ```
