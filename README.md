@@ -9,8 +9,8 @@ Tutorial for Programming Project Database
 The implementation is written in Python.
 
 To create the database:
-> psql -d postgres -U postgres -f sql/create_database.sql 
-> psql -d dbtutor -U len -f sql/schema.sql 
+> psql -d postgres -U postgres -f sql/create_database.sql
+> psql -d dbtutor -U len -f sql/schema.sql
 
 To run development server
 > cd src/ProgDBTutor
