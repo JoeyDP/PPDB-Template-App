@@ -92,8 +92,7 @@ class QuoteDataAccess:
     
     def get_quote(self, iden):
         cursor = self.dbconnect.get_cursor()
-        #See also SO: https://stackoverflow.com/questions/45128902/psycopg2-and-sql-injection-security
-        cursor.execute('SELECT id, text, author FROM Quote WHERE id=%s', (iden,))
+        cursor.execute('SELECT id, text, author FROM Quote WHERE id=%s', (iden,))         #See also SO: https://stackoverflow.com/questions/45128902/psycopg2-and-sql-injection-security
         row = cursor.fetchone()   
         return Quote(row[0],row[1],row[2])
      
@@ -140,26 +139,30 @@ class TestQuoteDataAccess(unittest.TestCase):
                          quote_obj.text.upper())
         connection.close();
     
-    def test_qet_quotes(self):
-        connection = self._connect()
-        quote_dao = QuoteDataAccess(dbconnect=connection)
-        quote_objects = quote_dao.get_quotes()
-        print(quote_objects[1])
-        self.assertEqual('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.'.upper(), 
-                         quote_objects[0].text.upper())
-        connection.close()
-        
-    def test_insert(self):
-        connection = self._connect()
-        quote_dao = QuoteDataAccess(dbconnect=connection)
-        quote_obj = Quote(iden=None,text='If Len can do it, anyone can ;-)',author='Len')
-        quote_dao.add_quote(quote_obj)
-        quote_objects = quote_dao.get_quotes()
-        print(quote_objects[-1]);
-        self.assertEqual('If Len can do it, anyone can ;-)'.upper(), 
-                         quote_objects[-1].text.upper())
-        self.assertEqual('Len', quote_objects[-1].author)
-        connection.close()
+    ....
+```
+
+Example of database sql files, see [create_database.sql].
+```sql
+CREATE ROLE len WITH LOGIN PASSWORD 'len';
+ALTER ROLE len CREATEDB;
+CREATE DATABASE dbtutor owner len;
+```
+
+SQL schema and example data, see [schema.sql].
+```sql
+CREATE TABLE Quote(
+	id SERIAL PRIMARY KEY,
+	text VARCHAR(256) UNIQUE NOT NULL,
+	author VARCHAR(128)
+);
+
+INSERT INTO Quote(text,author) VALUES('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.','John Louis von Neumann');
+INSERT INTO Quote(text,author) VALUES('Computer science is no more about computers than astronomy is about telescopes','Edsger Dijkstra');
+INSERT INTO Quote(text,author) VALUES('To understand recursion you must first understand recursion..', 'Unknown');
+INSERT INTO Quote(text,author) VALUES('You look at things that are and ask, why? I dream of things that never were and ask, why not?','Unknown');
+INSERT INTO Quote(text,author) VALUES('Mathematics is the key and door to the sciences.', 'Galileo Galilei');
+INSERT INTO Quote(text,author) VALUES('Not everyone will understand your journey. Thats fine. Its not their journey to make sense of. Its yours.','Unknown');
 ```
 
 ### Web Service ###
@@ -268,10 +271,7 @@ h1{
 	font-weight:bold;
 	font-size:16pt;
 }
-//larger-font to all elements that have class=larger
-.larger{
-	font-size:14pt;
-}
+...
 //applicable to all div elements that have class borderme
 div.borderme{
 	border: 1px solid darkgrey; 
@@ -288,20 +288,8 @@ div.header{
 	padding: 0px;
 	margin:0 px;
 	margin-bottom: 20px;
-	font-family:"font-family: Helvetica, Arial, sans-serif!important";
-    font-size: 14pt;
 }
-div.footer{
-	//used absolute position relative to bottom-left
-	position:absolute;
-	background-color:  lightgrey;
-	bottom:0;
-	left:0;
-	width:100%; 
-	height:30px; 
-	padding: 0px;
-	font-family:"font-family: Helvetica, Arial, sans-serif!important";
-    font-size: 15pt;
+...
 }
 ```
 
