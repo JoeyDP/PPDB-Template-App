@@ -29,7 +29,7 @@
                         <div class="col">
                             <div id="quotes">
                                 {% for quote_obj in quote_objects %}
-                                     <div style="padding: 10px"><span style="font-style: italic;">{{quote_obj.text}}</span>
+                                     <div style="padding: 10px"><span style="font-style: italic;">"{{quote_obj.text}}"</span>
                                             -- {{quote_obj.author}}
                                      </div>
                                 {% endfor %}
