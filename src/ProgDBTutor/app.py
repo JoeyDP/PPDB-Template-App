@@ -24,7 +24,7 @@ def get_quotes():
     #Translate to json
     return jsonify([obj.to_dct() for obj in quote_objects])
 
-@app.route('/quote/<int:id>',methods=['GET'])
+@app.route('/quotes/<int:id>',methods=['GET'])
 def get_quote(id): 
     #ID of quote must be passed as parameter, e.g. http://localhost:5000/quote?id=101
     #Lookup row in table Quote, e.g. 'SELECT ID,TEXT FROM Quote WHERE ID=?' and ?=101
@@ -32,7 +32,7 @@ def get_quote(id):
     return jsonify(quote_obj.to_dct())
 
 #To create resource use HTTP POST
-@app.route('/addquote',methods=['POST'])
+@app.route('/quotes',methods=['POST'])
 def add_quote(): 
     #Text value of <input type="text" id="text"> was posted by form.submit
     quote_text = request.form.get('text')
