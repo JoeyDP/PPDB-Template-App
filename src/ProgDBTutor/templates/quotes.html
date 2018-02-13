@@ -1,27 +1,60 @@
 <html>
 <head>
 	<title>{{app_data['app_name']}}</title>
-	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
+    
+   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    
+	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static',filename='mystyle.css') }}">
+    
+	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
+	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
 </head>
 <body>	
-	{% include 'header.html' %} 
-    <div>
-    		<a href="/">show main</a>
-    		<div class="borderme">
-    			<div class="smalltitle">Quotes:</div>
-    			{% for quote_obj in quote_objects %}
-    				 <div style="padding: 10px"><span style="font-style: italic;">{{quote_obj.text}}</span>
-    				 		-- {{quote_obj.author}}
-    				 </div>
-    			{% endfor %}
-  			</div>  			
-    		</div>
-    		<form action="/addquote" method="post">
-    			Text: <input type ="text" name="text"/><br/>
-           	Author: <input type ="text" name="author"/><br/>
-           	<input type ="submit" value="save"/>
-         </form>  
+	{% include 'header.html' %}
+    
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <a href="/">show main</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="borderme col-md-8">
+                    <div class="smalltitle row">
+                        <div class="col">Quotes (Classic):</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="quotes">
+                                {% for quote_obj in quote_objects %}
+                                     <div style="padding: 10px"><span style="font-style: italic;">{{quote_obj.text}}</span>
+                                            -- {{quote_obj.author}}
+                                     </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="smalltitle row">
+                        <div class="col">Add quote:</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <form id="addQuoteForm" action="/quotes" method="post">
+                                    Text: <input type ="text" name="text" id="text"/><br/>
+                                Author: <input type ="text" name="author" id="author"/><br/>
+                                <input type ="submit" value="save"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     {% include 'footer.html' %}   
 </body>
 </html>
