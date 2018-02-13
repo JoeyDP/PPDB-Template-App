@@ -15,7 +15,14 @@
     
     <!-- 
         Bootstrap has a grid system for aligning elements in a responsive layout.
-        Each row contains 12 columns which are used 
+
+        The outer element is a container, which contains rows and columns.
+        Each row can should contain up to 12 columns. However, excess columns
+        will simply be stacked.
+
+        When adding multiple columns to a row, the framework automatically assigns
+        equal width to all columns. For variable with columns, one can use for
+        instance col-1, col-sm-2, col-md-4 or col-xl-8.
 
         More information can be found using the following URL:
             https://getbootstrap.com/docs/4.0/layout/grid/
@@ -41,10 +48,10 @@
                 </div>
                 <form action="/quotes" method="post">
                     <div class="row">
-                        <div class="col-xl-6">
+                        <div class="col-xl">
                             POST <a class="reststyle"> /quotes?text=X&author=Y</a> 
                         </div>
-                        <div class="col-xl-6">
+                        <div class="col-xl">
                             <div class="row">
                                 <div class="col-md-4">
                                     Text:
