@@ -1,11 +1,13 @@
 <html>
 <head>
 	<title>{{app_data['app_name']}}</title>
-    
-	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
-    
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 	<link href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet">
+    
+	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
+	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
 </head>
 <body>	
 	{% include 'header.html' %}
