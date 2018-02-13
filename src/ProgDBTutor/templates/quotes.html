@@ -13,42 +13,40 @@
 <body>	
 	{% include 'header.html' %}
     
-    <div class="row">
-        <div class="col">
-            <div class="row">
-                <div class="col">
-                    <a href="/">show main</a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <a href="/">show main</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="borderme col-md-8">
+                <div class="smalltitle row">
+                    <div class="col">Quotes (Classic):</div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div id="quotes">
+                            {% for quote_obj in quote_objects %}
+                                 <div style="padding: 10px"><span style="font-style: italic;">"{{quote_obj.text}}"</span>
+                                        -- {{quote_obj.author}}
+                                 </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="borderme col-md-8">
-                    <div class="smalltitle row">
-                        <div class="col">Quotes (Classic):</div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div id="quotes">
-                                {% for quote_obj in quote_objects %}
-                                     <div style="padding: 10px"><span style="font-style: italic;">"{{quote_obj.text}}"</span>
-                                            -- {{quote_obj.author}}
-                                     </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-md-4">
+                <div class="smalltitle row">
+                    <div class="col">Add quote:</div>
                 </div>
-                <div class="col-md-4">
-                    <div class="smalltitle row">
-                        <div class="col">Add quote:</div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <form id="addQuoteForm" action="/quotes" method="post">
-                                    Text: <input type ="text" name="text" id="text"/><br/>
-                                Author: <input type ="text" name="author" id="author"/><br/>
-                                <input type ="submit" value="save"/>
-                            </form>
-                        </div>
+                <div class="row">
+                    <div class="col">
+                        <form id="addQuoteForm" action="/quotes" method="post">
+                                Text: <input type ="text" name="text" id="text"/><br/>
+                            Author: <input type ="text" name="author" id="author"/><br/>
+                            <input type ="submit" value="save"/>
+                        </form>
                     </div>
                 </div>
             </div>
