@@ -117,16 +117,22 @@ if __name__ == "__main__":
 
 Jinja2 template [header.html]
 ```html
-<div class="header">
-	<h1>{{app_data['app_name']}}</h1>
+<div class="header row">
+    <div class="col">
+	   <h1>{{app_data['app_name']}}</h1>
+    </div>
 </div>
 ```
 
 Jinja2 template [footer.html]
 ```html
-<div class="footer">
-    &copy; Len Feremans, Universiteit Antwerpen, 2018
-    <img src="{{ url_for('static',filename='ua_logo.png') }}" style="float: right; height:30px;"/>
+<div class="fixed-bottom footer row">
+    <div class="col-md-8">
+        &copy; Len Feremans &amp; Sandy Moens &ndash; Universiteit Antwerpen &ndash; 2018
+    </div>
+    <div class="col-md-4">
+        <img src="{{ url_for('static',filename='ua_logo.png') }}" style="float: right; height:30px;"/>
+    </div>
 </div>
 ```
 
