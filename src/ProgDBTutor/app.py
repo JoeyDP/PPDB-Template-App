@@ -26,7 +26,7 @@ def get_quotes():
 
 @app.route('/quotes/<int:id>',methods=['GET'])
 def get_quote(id): 
-    #ID of quote must be passed as parameter, e.g. http://localhost:5000/quote?id=101
+    #ID of quote must be passed as parameter, e.g. http://localhost:5000/quotes?id=101
     #Lookup row in table Quote, e.g. 'SELECT ID,TEXT FROM Quote WHERE ID=?' and ?=101
     quote_obj = quote_data_access.get_quote(id)
     return jsonify(quote_obj.to_dct())
