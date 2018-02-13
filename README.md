@@ -71,15 +71,15 @@ def get_quotes():
     #Translate to json
     return jsonify([obj.to_dct() for obj in quote_objects])
 
-@app.route('/quote/<int:id>',methods=['GET'])
+@app.route('/quotes/<int:id>',methods=['GET'])
 def get_quote(id): 
-    #ID of quote must be passed as parameter, e.g. http://localhost:5000/quote?id=101
+    #ID of quote must be passed as parameter, e.g. http://localhost:5000/quotes?id=101
     #Lookup row in table Quote, e.g. 'SELECT ID,TEXT FROM Quote WHERE ID=?' and ?=101
     quote_obj = quote_data_access.get_quote(id)
     return jsonify(quote_obj.to_dct())
 
 #To create resource use HTTP POST
-@app.route('/addquote',methods=['POST'])
+@app.route('/quotes',methods=['POST'])
 def add_quote(): 
     #Text value of <input type="text" id="text"> was posted by form.submit
     quote_text = request.form.get('text')
@@ -175,27 +175,91 @@ Jinja2 template example of *rendering server-side*: [quotes.html]
 <html>
 <head>
 	<title>{{app_data['app_name']}}</title>
-	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    
+	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static',filename='mystyle.css') }}">
+    
+	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
+	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
 </head>
 <body>	
-    {% include 'header.html' %} 
-    <div>
-    		<a href="/">show main</a>
-    		<div class="borderme">
-    			<div class="smalltitle">Quotes:</div>
-    			{% for quote_obj in quote_objects %}
-    				 <div style="padding: 10px"><span style="font-style: italic;">{{quote_obj.text}}</span>
-    				 		-- {{quote_obj.author}}
-    				 </div>
-    			{% endfor %}
-  			</div>  			
-    		</div>
-    		<form action="/addquote" method="post">
-    			Text: <input type ="text" name="text"/><br/>
-           	Author: <input type ="text" name="author"/><br/>
-           	<input type ="submit" value="save"/>
-         </form>  
+	{% include 'header.html' %}
+    
+    <!-- 
+        Bootstrap has a grid system for aligning elements in a responsive layout.
+
+        The outer element is a container, which contains rows and columns.
+        Each row can should contain up to 12 columns. However, excess columns
+        will simply be stacked.
+
+        When adding multiple columns to a row, the framework automatically assigns
+        equal width to all columns. For variable with columns, one can use for
+        instance col-1, col-sm-2, col-md-4 or col-xl-8.
+
+        More information can be found using the following URL:
+            https://getbootstrap.com/docs/4.0/layout/grid/
+    -->
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="borderme col-md-8">
+                <div class="row">
+                    <div class="col">
+                        <div class="smalltitle">Test REST api:</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        GET <a class="larger" href="/quotes">/quotes</a><br/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        GET <a class="larger" href="/quotes/1">/quotes/1</a> <br/>
+                    </div>
+                </div>
+                <form action="/quotes" method="post">
+                    <div class="row">
+                        <div class="col-xl">
+                            POST <a class="reststyle"> /quotes?text=X&author=Y</a> 
+                        </div>
+                        <div class="col-xl">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    Text:
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" name="text"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    Author:
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" name="author"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type = "submit"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="borderme col-md-4">
+                <div class="smalltitle">User interface:</div>
+                <a class="larger" href="/show_quotes">show quotes (classic)</a><br/>
+                <a class="larger" href="/show_quotes_ajax">show quotes (ajax)</a>
+            </div>
+        </div>
     </div>
+    
     {% include 'footer.html' %}   
 </body>
 </html>
@@ -207,55 +271,85 @@ Alternative Jinja2 template example of *rendering client-side* with *ajax* and u
 <html>
 <head>
 	<title>{{app_data['app_name']}}</title>
+    
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    
+	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static',filename='mystyle.css') }}">
+    
 	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
-	<link  href="{{ url_for('static',filename='mystyle.css') }}" rel="stylesheet"> </link>
+	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
+    
 	<script>
-function load_quotes(f){
-	$.ajax({url: "/quotes", type: "GET", dataType: "json"}).done(f);
-}
+        function load_quotes(f){
+            $.ajax({url: "/quotes", type: "GET", dataType: "json"}).done(f);
+        }
 
-function save_quote(text,author,f){
-	$.ajax({url: "/addquote", type: "POST", data: {'text': text, 'author': author}});
-}
+        function save_quote(text,author,f){
+            $.ajax({url: "/quotes", type: "POST", data: {'text': text, 'author': author}});
+        }
 
-function render_quotes(data){
-	$("#quotes").empty();
-  	for(var i=0;i<data.length;i++){
-  		$("#quotes").append(
-  				'<div style="padding: 10px"><span style="font-style: italic;">' 
-  				  + data[i]['text'] 
-  				  + '</span> -- ' 
-  				  + data[i]['author'] 
-  				  + '</div>');
-  	}
-}
-	
-$(document).ready(function() {	
-	 load_quotes(render_quotes);
-	 $("#addQuoteForm").on("submit", function(event){
-	 	event.preventDefault();
-	 	var text = $("#text").val();
-	 	var author = $("#author").val();
-	 	save_quote(text,author);
-	 	load_quotes(render_quotes);
-	 });
-});
+        function render_quotes(data){
+            $("#quotes").empty();
+            for(var i=0;i<data.length;i++){
+                $("#quotes").append(
+                        '<div style="padding: 10px"><span style="font-style: italic;">\"' 
+                          + data[i]['text'] 
+                          + '\"</span> -- ' 
+                          + data[i]['author'] 
+                          + '</div>');
+            }
+        }
+
+        $(document).ready(function() {	
+             load_quotes(render_quotes);
+             $("#addQuoteForm").on("submit", function(event){
+                event.preventDefault();
+                var text = $("#text").val();
+                var author = $("#author").val();
+                save_quote(text,author);
+                load_quotes(render_quotes);
+             });
+        });
 	</script>
 </head>
 <body>	
-	{% include 'header.html' %} 
-    <div>
-    		<a href="/">show main</a>
-    		<div class="borderme">
-    			<div class="smalltitle">Quotes:</div>
-    			<div id="quotes"/>		
-      	</div>
-      	<form id="addQuoteForm" action="/" method="post">
-    			Text: <input type ="text" name="text" id="text"/><br/>
-           	Author: <input type ="text" name="author" id="author"/><br/>
-           	<input type ="submit" value="save"/> <span id="status">
-         </form>  
+	{% include 'header.html' %}
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <a href="/">show main</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="borderme col-md-8">
+                <div class="smalltitle row">
+                    <div class="col">Quotes (A:</div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div id="quotes"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="smalltitle row">
+                    <div class="col">Add quote:</div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <form id="addQuoteForm" action="/" method="post">
+                                Text: <input type ="text" name="text" id="text"/><br/>
+                            Author: <input type ="text" name="author" id="author"/><br/>
+                            <input type ="submit" value="save"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
     {% include 'footer.html' %}   
 </body>
 </html>
