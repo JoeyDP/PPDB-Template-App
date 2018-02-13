@@ -182,7 +182,7 @@ Jinja2 template example of *rendering server-side*: [quotes.html]
 <head>
 	<title>{{app_data['app_name']}}</title>
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     
 	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static',filename='mystyle.css') }}">
@@ -278,7 +278,7 @@ Alternative Jinja2 template example of *rendering client-side* with *ajax* and u
 <head>
 	<title>{{app_data['app_name']}}</title>
     
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     
 	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static',filename='mystyle.css') }}">
