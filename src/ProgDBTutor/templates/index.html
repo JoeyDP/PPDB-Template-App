@@ -13,57 +13,62 @@
 <body>	
 	{% include 'header.html' %}
     <div class="row">
-        <div class="borderme col-md-8">
+        <div class="col">
             <div class="row">
-                <div class="col">
-                    <div class="smalltitle">Test REST api:</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    GET <a class="larger" href="/quotes">/quotes</a><br/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    GET <a class="larger" href="/quotes/1">/quotes/1</a> <br/>
-                </div>
-            </div>
-            <form action="/quotes" method="post">
-                <div class="row">
-                    <div class="col-xl-6">
-                        POST <a class="reststyle"> /quotes?text=X&author=Y</a> 
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="row">
-                            <div class="col-md-4">
-                                Text:
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" name="text"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                Author:
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" name="author"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input type = "submit"/>
-                            </div>
+                <div class="borderme col-md-8">
+                    <div class="row">
+                        <div class="col">
+                            <div class="smalltitle">Test REST api:</div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            GET <a class="larger" href="/quotes">/quotes</a><br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            GET <a class="larger" href="/quotes/1">/quotes/1</a> <br/>
+                        </div>
+                    </div>
+                    <form action="/quotes" method="post">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                POST <a class="reststyle"> /quotes?text=X&author=Y</a> 
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        Text:
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="text"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        Author:
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="author"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type = "submit"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-        <div class="borderme col-md-4">
-            <div class="smalltitle">User interface:</div>
-            <a class="larger" href="/show_quotes">show quotes (classic)</a><br/>
-            <a class="larger" href="/show_quotes_ajax">show quotes (ajax)</a>
+        
+                <div class="borderme col-md-4">
+                    <div class="smalltitle">User interface:</div>
+                    <a class="larger" href="/show_quotes">show quotes (classic)</a><br/>
+                    <a class="larger" href="/show_quotes_ajax">show quotes (ajax)</a>
+                </div>
+            </div>
         </div>
     </div>
     {% include 'footer.html' %}   
