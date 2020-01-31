@@ -1,13 +1,13 @@
 #Author: Len Feremans
 #Unit tests for QuoteDataAccess 
 import unittest
-from quote_data_access import DBConnection, QuoteDataAccess, Quote
-from config import *
+from .quote_data_access import DBConnection, QuoteDataAccess, Quote
+from .config import *
 
 class TestQuoteDataAccess(unittest.TestCase):
 
     def _connect(self):
-        connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] ,dbpass=config_data['dbpass'], dbhost=config_data['dbhost'])
+        connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] )
         return connection
     
     def test_connection(self):

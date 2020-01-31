@@ -5,39 +5,71 @@ Implementation of example web application in python with relational database. By
 Tutorial for Programming Project Database students, or persons interested in creating a web application in python.
 
 We depend on the following technologies:
-![alt text](https://github.com/lfereman/tutorial/blob/master/doc/stack.png "Stack")
+
+![stack](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/stack.png?raw=true "Stack")
 
 ### Quick start ###
 The implementation is written in Python.
 
-To create the database:
-> psql -d postgres -U postgres -f sql/create_database.sql
->
-> psql -d dbtutor -U len -f sql/schema.sql
+#### 1. Postgres database and Python interface
+```bash
+sudo apt install postgresql postgresql-server-dev-11
+sudo apt install python-psycopg2
+```
 
-To run development server
-> cd src/ProgDBTutor
->
-> python app.py
+#### 2. create the database
+First configure the database with `postgresql` user:
+```bash
+sudo su postgres
+psql
+```
+Then create a role 'app' that will create the database and be used by the application:
+```sql
+CREATE ROLE app WITH LOGIN CREATEDB;
+CREATE DATABASE dbtutor owner app;
+```
 
+You need to 'trust' the role to be able to login. Add the following line to `/etc/postgresql/11/main/pg_hba.conf`
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# app
+local   dbtutor         app                                     trust
+```
+
+Then initialize the database:
+```bash
+psql dbtutor -U app -f sql/schema.sql
+```
+
+#### 3. Download Dependencies
+
+```bash
+virtualenv -p python3 env
+source env/bin/activate
+pip3 install -r requirements.txt
+```
+
+
+#### 4. Run development server
+```bash
+cd src/ProgDBTutor
+python app.py
+```
 Then visit http://localhost:5000
 
-To run unit tests:
-> cd src/ProgDBTutor
->
-> nosetests
 
-### Dependencies ###
-Python modules (install using "pip install name"):
-* psycopg2,psycopg2-binary
-* flask
- 
-Postgres database (install, then make sure psql is running)
+#### 5. Run unit tests:
+```bash
+cd src/ProgDBTutor
+nosetests
+```
+
 
 ### Result ###
-![alt text](https://github.com/lfereman/tutorial/blob/master/doc/dbtutor_index.png "Index page")
-![alt text](https://github.com/lfereman/tutorial/blob/master/doc/dbtutor_rest.png "Output rest service")
-![alt text](https://github.com/lfereman/tutorial/blob/master/doc/dbtutor_quotes.png "Viewing and adding quotes")
+![index](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_index.png?raw=true "Index page")
+![rest](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_rest.png?raw=true "Output rest service")
+![quotes](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_quotes.png?raw=true "Viewing and adding quotes")
 
 ### Code ###
 
@@ -65,14 +97,14 @@ quote_data_access = QuoteDataAccess(connection)
 ### REST API ###
 ### See https://www.ibm.com/developerworks/library/ws-restful/index.html ###
 @app.route('/quotes',methods=['GET'])
-def get_quotes(): 
+def get_quotes():
     #Lookup row in table Quote, e.g. 'SELECT ID,TEXT FROM Quote'
     quote_objects = quote_data_access.get_quotes()
     #Translate to json
     return jsonify([obj.to_dct() for obj in quote_objects])
 
 @app.route('/quotes/<int:id>',methods=['GET'])
-def get_quote(id): 
+def get_quote(id):
     #ID of quote must be passed as parameter, e.g. http://localhost:5000/quotes?id=101
     #Lookup row in table Quote, e.g. 'SELECT ID,TEXT FROM Quote WHERE ID=?' and ?=101
     quote_obj = quote_data_access.get_quote(id)
@@ -80,7 +112,7 @@ def get_quote(id):
 
 #To create resource use HTTP POST
 @app.route('/quotes',methods=['POST'])
-def add_quote(): 
+def add_quote():
     #Text value of <input type="text" id="text"> was posted by form.submit
     quote_text = request.form.get('text')
     quote_author = request.form.get('author')
@@ -156,7 +188,7 @@ h1{
 ...
 //applicable to all div elements that have class borderme
 div.borderme{
-	border: 1px solid darkgrey; 
+	border: 1px solid darkgrey;
 	padding:10px;
 	padding-bottom: 20px;
 }
@@ -165,8 +197,8 @@ div.header{
 	top:0;
 	left:0;
 	background-color:  #efefef;
-	width:100%; 
-	height:25px; 
+	width:100%;
+	height:25px;
 	padding: 0px;
 	margin:0 px;
 	margin-bottom: 20px;
@@ -183,17 +215,17 @@ Jinja2 template example of *rendering server-side*: [quotes.html]
 	<title>{{app_data['app_name']}}</title>
 
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    
+
 	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static',filename='mystyle.css') }}">
-    
+
 	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
 	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
 </head>
-<body>	
+<body>
 	{% include 'header.html' %}
-    
-    <!-- 
+
+    <!--
         Bootstrap has a grid system for aligning elements in a responsive layout.
 
         The outer element is a container, which contains rows and columns.
@@ -207,7 +239,7 @@ Jinja2 template example of *rendering server-side*: [quotes.html]
         More information can be found using the following URL:
             https://getbootstrap.com/docs/4.0/layout/grid/
     -->
-    
+
     <div class="container-fluid">
         <div class="row">
             <div class="borderme col-md-8">
@@ -229,7 +261,7 @@ Jinja2 template example of *rendering server-side*: [quotes.html]
                 <form action="/quotes" method="post">
                     <div class="row">
                         <div class="col-xl">
-                            POST <a class="reststyle"> /quotes?text=X&author=Y</a> 
+                            POST <a class="reststyle"> /quotes?text=X&author=Y</a>
                         </div>
                         <div class="col-xl">
                             <div class="row">
@@ -265,7 +297,7 @@ Jinja2 template example of *rendering server-side*: [quotes.html]
             </div>
         </div>
     </div>
-    
+
     {% include 'footer.html' %}   
 </body>
 </html>
@@ -277,15 +309,15 @@ Alternative Jinja2 template example of *rendering client-side* with *ajax* and u
 <html>
 <head>
 	<title>{{app_data['app_name']}}</title>
-    
+
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    
+
 	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static',filename='mystyle.css') }}">
-    
+
 	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
 	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
-    
+
 	<script>
         function load_quotes(f){
             $.ajax({url: "/quotes", type: "GET", dataType: "json"}).done(f);
@@ -299,15 +331,15 @@ Alternative Jinja2 template example of *rendering client-side* with *ajax* and u
             $("#quotes").empty();
             for(var i=0;i<data.length;i++){
                 $("#quotes").append(
-                        '<div style="padding: 10px"><span style="font-style: italic;">\"' 
-                          + data[i]['text'] 
-                          + '\"</span> -- ' 
-                          + data[i]['author'] 
+                        '<div style="padding: 10px"><span style="font-style: italic;">\"'
+                          + data[i]['text']
+                          + '\"</span> -- '
+                          + data[i]['author']
                           + '</div>');
             }
         }
 
-        $(document).ready(function() {	
+        $(document).ready(function() {
              load_quotes(render_quotes);
              $("#addQuoteForm").on("submit", function(event){
                 event.preventDefault();
@@ -319,9 +351,9 @@ Alternative Jinja2 template example of *rendering client-side* with *ajax* and u
         });
 	</script>
 </head>
-<body>	
+<body>
 	{% include 'header.html' %}
-    
+
     <div class="container-fluid">
         <div class="row">
             <div class="col">
@@ -355,7 +387,7 @@ Alternative Jinja2 template example of *rendering client-side* with *ajax* and u
             </div>
         </div>
     </div>
-    
+
     {% include 'footer.html' %}   
 </body>
 </html>
@@ -378,52 +410,52 @@ class DBConnection:
         except:
             print('ERROR: Unable to connect to database')
             raise Exception('Unable to connect to database')
-        
+
     def close(self):
         self.conn.close()
-        
+
     def get_connection(self):
         return self.conn
-    
+
     def get_cursor(self):
         return self.conn.cursor()
-    
+
     def commit(self):
         return self.conn.commit()
-    
+
     def rollback(self):
         return self.conn.rollback()
-         
+
 class Quote:
     def __init__(self, iden, text, author):
         self.id = iden
         self.text = text
         self.author = author
-        
+
     def to_dct(self):
         return {'id': self.id, 'text': self.text, 'author': self.author}
-    
+
 class QuoteDataAccess:
-    
+
     def __init__(self, dbconnect):
         self.dbconnect = dbconnect
-       
+
     def get_quotes(self):
         cursor = self.dbconnect.get_cursor()
         cursor.execute('SELECT id, text, author FROM Quote')  
         quote_objects = list()
         for row in cursor:
-            quote_obj = Quote(row[0],row[1],row[2]) 
+            quote_obj = Quote(row[0],row[1],row[2])
             quote_objects.append(quote_obj)
         return quote_objects
-    
+
     def get_quote(self, iden):
         cursor = self.dbconnect.get_cursor()
         cursor.execute('SELECT id, text, author FROM Quote WHERE id=%s', (iden,))         #See also SO: https://stackoverflow.com/questions/45128902/psycopg2-and-sql-injection-security
         row = cursor.fetchone()   
         return Quote(row[0],row[1],row[2])
-     
-    def add_quote(self, quote_obj): 
+
+    def add_quote(self, quote_obj):
         cursor = self.dbconnect.get_cursor()
         try:
             cursor.execute('INSERT INTO Quote(text,author) VALUES(%s,%s)', (quote_obj.text, quote_obj.author,))
@@ -441,7 +473,7 @@ class QuoteDataAccess:
 Example of *unit test* of data access code, see [test_quote_data_access.py]
 ```python
 #Author: Len Feremans
-#Unit tests for QuoteDataAccess 
+#Unit tests for QuoteDataAccess
 import unittest
 from quote_data_access import DBConnection, QuoteDataAccess, Quote
 from config import *
@@ -451,21 +483,21 @@ class TestQuoteDataAccess(unittest.TestCase):
     def _connect(self):
         connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] ,dbpass=config_data['dbpass'], dbhost=config_data['dbhost'])
         return connection
-    
+
     def test_connection(self):
         connection = self._connect()
         connection.close()
         print("Connection: ok")
-        
+
     def test_qet_quote(self):
         connection = self._connect()
         quote_dao = QuoteDataAccess(dbconnect=connection)
         quote_obj=quote_dao.get_quote(iden=1)
         print(quote_obj)
-        self.assertEqual('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.'.upper(), 
+        self.assertEqual('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.'.upper(),
                          quote_obj.text.upper())
         connection.close();
-    
+
     ....
 ```
 
