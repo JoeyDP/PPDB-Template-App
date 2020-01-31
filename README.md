@@ -17,7 +17,8 @@ sudo apt install postgresql postgresql-server-dev-11
 sudo apt install python-psycopg2
 ```
 
-#### 2. create the database
+
+#### 2. Create the database
 First configure the database with `postgresql` user:
 ```bash
 sudo su postgres
@@ -41,6 +42,7 @@ Then initialize the database:
 ```bash
 psql dbtutor -U app -f sql/schema.sql
 ```
+
 
 #### 3. Download Dependencies
 
