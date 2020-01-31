@@ -404,9 +404,9 @@ Example of data-access pattern [quote_data_access.py] for executing *SQL* querie
 import psycopg2
 
 class DBConnection:
-    def __init__(self,dbname,dbuser,dbpass,dbhost):
+    def __init__(self,dbname,dbuser):
         try:
-            self.conn = psycopg2.connect("dbname='{}' user='{}' host='{}' password='{}'".format(dbname,dbuser,dbhost, dbpass))
+            self.conn = psycopg2.connect("dbname='{}' user='{}'".format(dbname,dbuser))
         except:
             print('ERROR: Unable to connect to database')
             raise Exception('Unable to connect to database')
@@ -451,7 +451,8 @@ class QuoteDataAccess:
 
     def get_quote(self, iden):
         cursor = self.dbconnect.get_cursor()
-        cursor.execute('SELECT id, text, author FROM Quote WHERE id=%s', (iden,))         #See also SO: https://stackoverflow.com/questions/45128902/psycopg2-and-sql-injection-security
+        #See also SO: https://stackoverflow.com/questions/45128902/psycopg2-and-sql-injection-security
+        cursor.execute('SELECT id, text, author FROM Quote WHERE id=%s', (iden,))
         row = cursor.fetchone()   
         return Quote(row[0],row[1],row[2])
 
@@ -468,44 +469,6 @@ class QuoteDataAccess:
         except:
             self.dbconnect.rollback()
             raise Exception('Unable to save quote!')
-```
-
-Example of *unit test* of data access code, see [test_quote_data_access.py]
-```python
-#Author: Len Feremans
-#Unit tests for QuoteDataAccess
-import unittest
-from quote_data_access import DBConnection, QuoteDataAccess, Quote
-from config import *
-
-class TestQuoteDataAccess(unittest.TestCase):
-
-    def _connect(self):
-        connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] ,dbpass=config_data['dbpass'], dbhost=config_data['dbhost'])
-        return connection
-
-    def test_connection(self):
-        connection = self._connect()
-        connection.close()
-        print("Connection: ok")
-
-    def test_qet_quote(self):
-        connection = self._connect()
-        quote_dao = QuoteDataAccess(dbconnect=connection)
-        quote_obj=quote_dao.get_quote(iden=1)
-        print(quote_obj)
-        self.assertEqual('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.'.upper(),
-                         quote_obj.text.upper())
-        connection.close();
-
-    ....
-```
-
-Example of database sql files, see [create_database.sql].
-```sql
-CREATE ROLE len WITH LOGIN PASSWORD 'len';
-ALTER ROLE len CREATEDB;
-CREATE DATABASE dbtutor owner len;
 ```
 
 SQL schema and example data, see [schema.sql].
