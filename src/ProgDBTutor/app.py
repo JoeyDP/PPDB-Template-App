@@ -1,4 +1,4 @@
-### TUTORIAL Len Feremans
+### TUTORIAL Len Feremans, Sandy Moens and Joey De Pauw
 ###see tutor https://code.tutsplus.com/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql--cms-22972
 from flask import Flask
 from flask.templating import render_template
@@ -12,7 +12,7 @@ app = Flask('Tutorial ')
 app.secret_key = '*^*(*&)(*)(*afafafaSDD47j\3yX R~X@H!jmM]Lwf/,?KT'
 app_data = {}
 app_data['app_name'] = config_data['app_name']
-connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] ,dbpass=config_data['dbpass'], dbhost=config_data['dbhost'])
+connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'])
 quote_data_access = QuoteDataAccess(connection)
 
 ### REST API ###
