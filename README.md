@@ -77,8 +77,8 @@ nosetests
 Example of implementation REST API and main view controller in *python* using *Flask* library, see [app.py].
 
 ```python
-### TUTORIAL Len Feremans
-### see also Flask tutor https://code.tutsplus.com/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql--cms-22972
+### TUTORIAL Len Feremans, Sandy Moens and Joey De Pauw
+###see tutor https://code.tutsplus.com/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql--cms-22972
 from flask import Flask
 from flask.templating import render_template
 from flask import request, session, jsonify
@@ -91,7 +91,7 @@ app = Flask('Tutorial ')
 app.secret_key = '*^*(*&)(*)(*afafafaSDD47j\3yX R~X@H!jmM]Lwf/,?KT'
 app_data = {}
 app_data['app_name'] = config_data['app_name']
-connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] ,dbpass=config_data['dbpass'], dbhost=config_data['dbhost'])
+connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'])
 quote_data_access = QuoteDataAccess(connection)
 
 ### REST API ###
@@ -142,6 +142,7 @@ def show_quotes_ajax():
 ### RUN DEV SERVER ###
 if __name__ == "__main__":
     app.run()
+
 ```
 ### View: ###
 
@@ -160,7 +161,7 @@ Jinja2 template [footer.html]
 ```html
 <div class="fixed-bottom footer row">
     <div class="col-md-8">
-        &copy; Len Feremans &amp; Sandy Moens &ndash; Universiteit Antwerpen &ndash; 2018
+        &copy; Len Feremans, Sandy Moens &amp; Joey De Pauw &ndash; Universiteit Antwerpen &ndash; 2018
     </div>
     <div class="col-md-4">
         <img src="{{ url_for('static',filename='ua_logo.png') }}" style="float: right; height:30px;"/>
