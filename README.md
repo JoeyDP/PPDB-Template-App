@@ -30,16 +30,17 @@ CREATE ROLE app WITH LOGIN CREATEDB;
 CREATE DATABASE dbtutor owner app;
 ```
 
-You need to 'trust' the role to be able to login. Add the following line to `/etc/postgresql/11/main/pg_hba.conf`
+You need to 'trust' the role to be able to login. Add the following line to `/etc/postgresql/11/main/pg_hba.conf` (you need root access)
 ```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # app
 local   dbtutor         app                                     trust
 ```
-
-Then initialize the database:
+and restart the service. Then initialize the database:
 ```bash
+sudo service postgresql restart
+
 psql dbtutor -U app -f sql/schema.sql
 ```
 
