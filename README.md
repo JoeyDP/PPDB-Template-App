@@ -1,5 +1,5 @@
 # README #
-Implementation of example web application in python with relational database. By Len Feremans assistant at the University of Antwerp (Belgium) within the Adrem data labs research group.
+Implementation of example web application in python with relational database. By Len Feremans, Sandy Moens and Joey De Pauw, assistants at the University of Antwerp (Belgium) within the Adrem data lab research group.
 
 ### What is this repository for? ###
 Tutorial for Programming Project Database students, or persons interested in creating a web application in python.
