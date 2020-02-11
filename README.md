@@ -87,13 +87,20 @@ ssh-keygen
 ```
 
 
-### Run on GCP using nginx
+### Run on GCP using nginx and gunicorn
 
 These steps demonstrate how to run this application with nginx. They are to be executed in addition to the setup in quick start. Instead of running the built in Flask debug server, we use an industrial grade webserver and reverse proxy server: nginx.
 
-#### 1. TODO
+#### 1. Install dependencies
+```bash
+sudo apt install nginx
+```
 
-TODO
+#### 2. Test if wsgi entrypoint works
+```bash
+cd src/ProgDBTutor
+gunicorn --bind 0.0.0.0:5000 wsgi:app
+```
 
 
 
