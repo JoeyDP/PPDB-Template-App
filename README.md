@@ -84,16 +84,47 @@ Via the console <https://console.cloud.google.com/>, you can create a project an
 
 #### 2. Create a Compute instance (VM)
 
-![index](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_index.png?raw=true "Index page")
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/vm_create0.png?raw=true)
+
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/vm_create1.png?raw=true)
+
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/vm_create2.png?raw=true)
 
 
+#### 3. Set static IP address
 
-#### 1. Create SSH key
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/network.png?raw=true)
 
-Use `ssh-keygen` to generate a private and public ssh key-pair. This is used to securely login to the remote server.
-```bash
-ssh-keygen
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/network_static.png?raw=true)
+
+#### 4. Add firewall rule
+
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/firewall_overview.png?raw=true)
+
+![firewall](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/firewall_create.png?raw=true)
+
+#### 5. Add SSH keys
+
+In the VM settings, you can add SSH keys for each team member. The next step explains how to generate an SSH key, if you already have one, you can skip this step.
+
+> (Optional) Create SSH key
+>
+> Use `ssh-keygen` to generate a private and public ssh key-pair. This is used to securely login to the remote server. Follow the instructions of this command. After this, a public and private key file will be created respectively `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`.
+
+Copy the contents of `~/.ssh/id_rsa.pub` to the VM instance.
+
+#### 6. Test your connection
+
+You should now be able to connect to the server with `ssh [username]@[external ip]`.
+
+>Optionally you can add the following lines to `~/.ssh/config`:
+>```
+Host ppdb
+    Hostname [external ip]
+    User [username]
 ```
+> Then you can connect simply with `ssh ppdb`
+
 
 
 ### Run on GCP using nginx and gunicorn
