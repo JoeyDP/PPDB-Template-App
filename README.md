@@ -125,10 +125,10 @@ You should now be able to connect to the server with `ssh [username]@[external i
 
 >Optionally you can add the following lines to `~/.ssh/config`:
 >```
-Host ppdb
-    Hostname [external ip]
-    User [username]
-```
+>Host ppdb
+>    Hostname [external ip]
+>    User [username]
+>```
 > Then you can connect simply with `ssh ppdb`
 
 
