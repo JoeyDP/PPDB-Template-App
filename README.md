@@ -96,13 +96,62 @@ These steps demonstrate how to run this application with nginx. They are to be e
 sudo apt install nginx
 ```
 
-#### 2. Test if wsgi entrypoint works
+#### 2. Create user to run application
+```bash
+sudo useradd -m -s /bin/bash app
+sudo su - app
+```
+
+#### 3. Clone the application in /home/app
+```bash
+git clone https://github.com/JoeyDP/PPDB-Template-App.git
+```
+
+#### 4. Follow Quick start to setup the project
+
+#### 5. Test if wsgi entrypoint works
+Instead of using the Flask debug server, we use gunicorn to serve the application.
 ```bash
 cd src/ProgDBTutor
 gunicorn --bind 0.0.0.0:5000 wsgi:app
 ```
 
+#### 6. Enable the webservice
+As an account with sudo acces (not app), copy the file `service/webapp.service` to `/etc/systemd/system/` and enable the service:
 
+```bash
+sudo ln -s /home/app/PPDB-Template-App/service/webapp.service /etc/systemd/system/
+
+sudo systemctl enable webapp
+sudo systemctl start webapp
+```
+A file `src/ProgDBTutor/webapp.sock` should be created.
+
+#### 7. Setup nginx
+Link or copy the nginx server block configuration file to the right nginx folders:
+```bash
+sudo ln -s /home/app/PPDB-Template-App/nginx/webapp /etc/nginx/sites-available/
+sudo ln -s /home/app/PPDB-Template-App/nginx/webapp /etc/nginx/sites-enabled/
+```
+
+The contents of this file can be changed for your setup. For example change the IP address to your external IP and add the correct DNS name (`team[x].ppdb.me`)
+```
+server {
+    listen 80;
+    server_name 0.0.0.0 ppdb.me;
+
+location / {
+  include proxy_params;
+  proxy_pass http://unix:/home/app/PPDB-Template-App/src/ProgDBTutor/webapp.sock;
+    }
+}
+```
+
+Test the configuration with `sudo nginx -t`.
+
+#### 8. Restart the server
+
+Restart the server with `sudo systemctl restart nginx`. Your application should be available on port 80.
 
 
 ### Code
