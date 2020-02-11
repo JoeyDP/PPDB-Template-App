@@ -11,10 +11,9 @@ We depend on the following technologies:
 ### Quick start ###
 The implementation is written in Python.
 
-#### 1. Postgres database and Python interface
+#### 1. Postgres database and Python interface (server version may vary)
 ```bash
-sudo apt install postgresql postgresql-server-dev-11
-sudo apt install python-psycopg2
+sudo apt install postgresql postgresql-server-dev-9.6 postgis python-psycopg2
 ```
 
 
@@ -30,7 +29,7 @@ CREATE ROLE app WITH LOGIN CREATEDB;
 CREATE DATABASE dbtutor owner app;
 ```
 
-You need to 'trust' the role to be able to login. Add the following line to `/etc/postgresql/11/main/pg_hba.conf` (you need root access)
+You need to 'trust' the role to be able to login. Add the following line to `/etc/postgresql/9.6/main/pg_hba.conf` (you need root access, version may vary). It needs to be the first rule (above local all all peer).
 ```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
