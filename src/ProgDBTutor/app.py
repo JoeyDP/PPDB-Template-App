@@ -15,6 +15,9 @@ app_data['app_name'] = config_data['app_name']
 connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'])
 quote_data_access = QuoteDataAccess(connection)
 
+DEBUG = False
+HOST = "127.0.0.1" if DEBUG else "0.0.0.0"
+
 ### REST API ###
 ### See https://www.ibm.com/developerworks/library/ws-restful/index.html ###
 @app.route('/quotes',methods=['GET'])
@@ -62,5 +65,5 @@ def show_quotes_ajax():
 
 ### RUN DEV SERVER ###
 if __name__ == "__main__":
-    app.run()
+    app.run(HOST, debug=DEBUG)
     
