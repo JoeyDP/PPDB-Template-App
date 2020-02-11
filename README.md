@@ -105,9 +105,9 @@ This brings you to the network configuration page. Here you need to set the exte
 
 ![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/network_static.png?raw=true)
 
-And create a nwe firewall rule if you want to run the debug server on port `5000`.
+And create a new firewall rule if you want to run the debug server on port `5000`.
 
-![firewall](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/master/firewall_create.png?raw=true)
+![firewall](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/firewall_create.png?raw=true)
 
 #### 4. Add SSH keys
 
