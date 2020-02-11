@@ -74,9 +74,32 @@ nosetests
 ![rest](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_rest.png?raw=true "Output rest service")
 ![quotes](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_quotes.png?raw=true "Viewing and adding quotes")
 
-### Code ###
+### Create GCP instance
 
-### Web Service ###
+Follow these steps to create a GCP instance.
+
+#### 1. Create SSH key
+
+Use `ssh-keygen` to generate a private and public ssh key-pair. This is used to securely login to the remote server.
+```bash
+ssh-keygen
+```
+
+
+### Run on GCP using nginx
+
+These steps demonstrate how to run this application with nginx. They are to be executed in addition to the setup in quick start. Instead of running the built in Flask debug server, we use an industrial grade webserver and reverse proxy server: nginx.
+
+#### 1. TODO
+
+TODO
+
+
+
+
+### Code
+
+#### Web Service
 Example of implementation REST API and main view controller in *python* using *Flask* library, see [app.py].
 
 ```python
@@ -147,7 +170,8 @@ if __name__ == "__main__":
     app.run()
 
 ```
-### View: ###
+
+#### View
 
 ##### Basics #####
 
@@ -211,7 +235,7 @@ div.header{
 }
 ```
 
-##### Rendering with templates (server-side) #####
+##### Rendering with templates (server-side)
 Jinja2 template example of *rendering server-side*: [quotes.html]
 ```html
 <html>
@@ -307,7 +331,7 @@ Jinja2 template example of *rendering server-side*: [quotes.html]
 </html>
 ```
 
-##### Rendering with JavaScript/jQuery/Ajax (client-side) #####
+##### Rendering with JavaScript/jQuery/Ajax (client-side)
 Alternative Jinja2 template example of *rendering client-side* with *ajax* and using *jQuery*: [quotes_ajax.html]
 ```html
 <html>
@@ -397,7 +421,7 @@ Alternative Jinja2 template example of *rendering client-side* with *ajax* and u
 </html>
 ```
 
-### Data layer: ###
+#### Data layer
 Example of data-access pattern [quote_data_access.py] for executing *SQL* queries from python using *psycopg2*
 
 ```python
@@ -475,7 +499,8 @@ class QuoteDataAccess:
             raise Exception('Unable to save quote!')
 ```
 
-SQL schema and example data, see [schema.sql].
+#### SQL schema
+With example data, see [schema.sql].
 ```sql
 CREATE TABLE Quote(
 	id SERIAL PRIMARY KEY,
