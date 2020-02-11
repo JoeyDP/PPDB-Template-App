@@ -84,26 +84,32 @@ Via the console <https://console.cloud.google.com/>, you can create a project an
 
 #### 2. Create a Compute instance (VM)
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/vm_create0.png?raw=true)
+These screenshots explain how to create a VM instance. Feel free to change any settings, this is only a suggestion, but make sure you have enough credit until the end of the semester.
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/vm_create1.png?raw=true)
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create0.png?raw=true)
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/vm_create2.png?raw=true)
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create1.png?raw=true)
+
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create2.png?raw=true)
 
 
-#### 3. Set static IP address
+#### 3. Set static IP address and add Firewall rule
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/network.png?raw=true)
+Then in the settings of your instance, under network iterfaces, click `View details`.
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/network_static.png?raw=true)
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/instance.png?raw=true)
 
-#### 4. Add firewall rule
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/network_overview.png?raw=true)
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/firewall_overview.png?raw=true)
+This brings you to the network configuration page. Here you need to set the external IP address to static:
 
-![firewall](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/GCP/firewall_create.png?raw=true)
+![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/network_static.png?raw=true)
 
-#### 5. Add SSH keys
+And create a nwe firewall rule if you want to run the debug server on port `5000`.
+
+![firewall](https://github.com/joeydp/PPDB-Template-App/blob/GCP/doc/master/firewall_create.png?raw=true)
+
+#### 4. Add SSH keys
 
 In the VM settings, you can add SSH keys for each team member. The next step explains how to generate an SSH key, if you already have one, you can skip this step.
 
@@ -113,7 +119,7 @@ In the VM settings, you can add SSH keys for each team member. The next step exp
 
 Copy the contents of `~/.ssh/id_rsa.pub` to the VM instance.
 
-#### 6. Test your connection
+#### 5. Test your connection
 
 You should now be able to connect to the server with `ssh [username]@[external ip]`.
 
