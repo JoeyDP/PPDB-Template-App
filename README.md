@@ -71,7 +71,9 @@ nosetests
 
 ### Result ###
 ![index](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_index.png?raw=true "Index page")
+
 ![rest](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_rest.png?raw=true "Output rest service")
+
 ![quotes](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_quotes.png?raw=true "Viewing and adding quotes")
 
 ### Code ###
