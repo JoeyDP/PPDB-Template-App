@@ -77,7 +77,16 @@ nosetests
 
 ### Create GCP instance
 
-Follow these steps to create a GCP instance.
+Follow these steps to create a GCP compute instance.
+
+#### 1. Create one GCP project and give every team member access
+Via the console <https://console.cloud.google.com/>, you can create a project and add your team members.
+
+#### 2. Create a Compute instance (VM)
+
+![index](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_index.png?raw=true "Index page")
+
+
 
 #### 1. Create SSH key
 
