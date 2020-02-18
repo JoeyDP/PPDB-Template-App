@@ -38,7 +38,7 @@ local   dbtutor         app                                     trust
 ```
 and restart the service. Then initialize the database:
 ```bash
-sudo service postgresql restart
+sudo systemctl restart postgresql
 
 psql dbtutor -U app -f sql/schema.sql
 ```
