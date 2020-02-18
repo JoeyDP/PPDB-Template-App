@@ -18,7 +18,7 @@ sudo apt install postgresql postgresql-server-dev-9.6 postgis python-psycopg2
 
 
 #### 2. Create the database
-First configure the database with `postgresql` user:
+First configure the database with `postgres` user:
 ```bash
 sudo su postgres
 psql
@@ -26,7 +26,7 @@ psql
 Then create a role 'app' that will create the database and be used by the application:
 ```sql
 CREATE ROLE app WITH LOGIN CREATEDB;
-CREATE DATABASE dbtutor owner app;
+CREATE DATABASE dbtutor OWNER app;
 ```
 
 You need to 'trust' the role to be able to login. Add the following line to `/etc/postgresql/9.6/main/pg_hba.conf` (you need root access, version may vary). It needs to be the first rule (above local all all peer).
