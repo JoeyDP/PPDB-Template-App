@@ -86,11 +86,9 @@ Via the console <https://console.cloud.google.com/>, you can create a project an
 
 These screenshots explain how to create a VM instance. Feel free to change any settings, this is only a suggestion, but make sure you have enough credit until the end of the semester.
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create0.png?raw=true)
+![create vm0](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create0.png?raw=true)
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create1.png?raw=true)
-
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create2.png?raw=true)
+![create vm1](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create1.png?raw=true)
 
 
 #### 3. Set static IP address and add Firewall rule
