@@ -1,16 +1,21 @@
 <html>
 <head>
 	<title>{{app_data['app_name']}}</title>
-    
+
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    
+
 	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.0.0.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static',filename='mystyle.css') }}">
-    
+
 	<script src="{{ url_for('static',filename='jquery-3.2.1.js') }}"></script>
 	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
-    
+
 	<script>
+			  function escapeStr(str) {
+					// Very circuitous way to escape HTML (prevent XSS).
+					return $("<div>").text(str).html()
+				}
+
         function load_quotes(f){
             $.ajax({url: "/quotes", type: "GET", dataType: "json"}).done(f);
         }
@@ -23,15 +28,15 @@
             $("#quotes").empty();
             for(var i=0;i<data.length;i++){
                 $("#quotes").append(
-                        '<div style="padding: 10px"><span style="font-style: italic;">\"' 
-                          + data[i]['text'] 
-                          + '\"</span> -- ' 
-                          + data[i]['author'] 
+                        '<div style="padding: 10px"><span style="font-style: italic;">\"'
+                          + escapeStr(data[i]['text'])
+                          + '\"</span> -- '
+                          + escapeStr(data[i]['author'])
                           + '</div>');
             }
         }
 
-        $(document).ready(function() {	
+        $(document).ready(function() {
              load_quotes(render_quotes);
              $("#addQuoteForm").on("submit", function(event){
                 event.preventDefault();
@@ -43,9 +48,9 @@
         });
 	</script>
 </head>
-<body>	
+<body>
 	{% include 'header.html' %}
-    
+
     <div class="container-fluid">
         <div class="row">
             <div class="col">
@@ -79,7 +84,7 @@
             </div>
         </div>
     </div>
-    
-    {% include 'footer.html' %}   
+
+    {% include 'footer.html' %}
 </body>
 </html>
