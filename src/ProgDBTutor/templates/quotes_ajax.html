@@ -11,10 +11,10 @@
 	<script src="{{ url_for('static',filename='bootstrap-4.0.0.min.js') }}"></script>
 
 	<script>
-			  function escapeStr(str) {
-					// Very circuitous way to escape HTML (prevent XSS).
-					return $("<div>").text(str).html()
-				}
+        function escapeStr(str) {
+            // Very circuitous way to escape HTML (prevent XSS).
+            return $("<div>").text(str).html()
+        }
 
         function load_quotes(f){
             $.ajax({url: "/quotes", type: "GET", dataType: "json"}).done(f);
@@ -75,7 +75,7 @@
                 <div class="row">
                     <div class="col">
                         <form id="addQuoteForm" action="/" method="post">
-                                Text: <input type ="text" name="text" id="text"/><br/>
+                            Text: <input type ="text" name="text" id="text"/><br/>
                             Author: <input type ="text" name="author" id="author"/><br/>
                             <input type ="submit" value="save"/>
                         </form>
