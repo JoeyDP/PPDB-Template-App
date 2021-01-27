@@ -1,13 +1,14 @@
-#Author: Len Feremans
-#Unit tests for QuoteDataAccess 
+# Author: Len Feremans
+# Unit tests for QuoteDataAccess
 import unittest
 from .quote_data_access import DBConnection, QuoteDataAccess, Quote
 from .config import *
 
+
 class TestQuoteDataAccess(unittest.TestCase):
 
     def _connect(self):
-        connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'] )
+        connection = DBConnection(dbname=config_data['dbname'], dbuser=config_data['dbuser'])
         return connection
     
     def test_connection(self):
@@ -22,7 +23,7 @@ class TestQuoteDataAccess(unittest.TestCase):
         print(quote_obj.to_dct())
         self.assertEqual('If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.'.upper(), 
                          quote_obj.text.upper())
-        connection.close();
+        connection.close()
     
     def test_qet_quotes(self):
         connection = self._connect()
@@ -38,12 +39,13 @@ class TestQuoteDataAccess(unittest.TestCase):
         connection.get_cursor().execute('DELETE from Quote where author=\'Len\'')
         connection.get_connection().commit()
         quote_dao = QuoteDataAccess(dbconnect=connection)
-        quote_obj = Quote(iden=None,text='If Len can do it, anyone can ;-)',author='Len')
+        quote_obj = Quote(iden=None, text='If Len can do it, anyone can ;-)', author='Len')
         quote_dao.add_quote(quote_obj)
         quote_objects = quote_dao.get_quotes()
-        print(quote_objects[-1].to_dct());
+        print(quote_objects[-1].to_dct())
         self.assertEqual('If Len can do it, anyone can ;-)'.upper(), 
                          quote_objects[-1].text.upper())
         self.assertEqual('Len', quote_objects[-1].author)
+        connection.get_cursor().execute('DELETE from Quote where author=\'Len\'')
+        connection.get_connection().commit()
         connection.close()
-        
