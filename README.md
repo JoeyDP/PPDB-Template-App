@@ -13,7 +13,7 @@ The implementation is written in Python.
 
 #### 1. Postgres database and Python interface (server version may vary)
 ```bash
-sudo apt install postgresql postgresql-server-dev-9.6 postgis python-psycopg2
+sudo apt install postgresql python-psycopg2
 ```
 
 
@@ -29,7 +29,7 @@ CREATE ROLE app WITH LOGIN CREATEDB;
 CREATE DATABASE dbtutor OWNER app;
 ```
 
-You need to 'trust' the role to be able to login. Add the following line to `/etc/postgresql/9.6/main/pg_hba.conf` (you need root access, version may vary). It needs to be the first rule (above local all all peer).
+You need to 'trust' the role to be able to login. Add the following line to `/etc/postgresql/9.6/main/pg_hba.conf` (you need root access, version may vary). __It needs to be the first rule (above local all all peer)__.
 ```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
@@ -86,38 +86,66 @@ Before continuing, add your team members to this project as well through the `IA
 
 #### 2. Create a Compute instance (VM)
 
-These screenshots explain how to create a VM instance. Feel free to change any settings, this is only a suggestion, but make sure you have enough credit until the end of the semester.
+These screenshots explain how to create a VM instance from the menu `Compute Engine > VM Instances`. Feel free to change any settings, this is only a suggestion, but make sure your instance doesn't use significantly more budget than the given example.
 
 ![create vm0](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create0.png?raw=true)
 
+The steps below indicate the changed settings. Screenshots are added to clarify.
+
+ - Change Region to `europe-west1 (Belgium)`, zone doesn't matter much.
+ - Set machine type to e2-small. This should more than suffice for the project.
+ - Set Boot disk size to 50Gb
+
 ![create vm1](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create1.png?raw=true)
 
+ - Allow HTTP and HTTPS traffic
+ - Open the `Management, security, disks, networking, sole tenancy` menu.
 
-#### 3. Set static IP address and add Firewall rule
+![create vm2](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create2.png?raw=true)
 
-Then in the settings of your instance, under network iterfaces, click `View details`.
+ - Under Networking, edit the default network interface.
+
+![create vm3](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create3.png?raw=true)
+
+ - Set a static external IP for the server.
+ - (Optionally) add the reverse DNS entry `team[x].ua-ppdb.me` where `[x]` is your team number.
+
+![create vm4](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create4.png?raw=true)
+
+
+#### 3. (Optional) Set static IP address and add Firewall rule
+
+If you forgot to set the static IP address, you can still edit this after the instance is created. Additionally, a firewall rule to allow traffic on specific ports can be added (if you forgot to check http/https traffic earlier or want to add access the debug server).
+
+In the settings of your instance, under network iterfaces, click `View details`.
 
 ![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/instance.png?raw=true)
 
+This brings you to the network configuration page.
+
 ![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/network_overview.png?raw=true)
 
-This brings you to the network configuration page. Here you need to set the external IP address to static:
+#### 3.1 Set static IP address
+
+From the network configuration, you can set the external IP address to static:
 
 ![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/network_static.png?raw=true)
 
-And create a new firewall rule if you want to run the debug server on port `5000`.
+#### 3.2 Add Firewall rule for debug server
+
+From the network configuration, you can create a new firewall rule if you want to run the debug server on port `5000`:
 
 ![firewall](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/firewall_create.png?raw=true)
 
 #### 4. Add SSH keys
 
-In the VM settings, you can add SSH keys for each team member. The next step explains how to generate an SSH key, if you already have one, you can skip this step.
+In the VM settings, you can add SSH keys for each team member.
 
-> (Optional) Create SSH key
->
-> Use `ssh-keygen` to generate a private and public ssh key-pair. This is used to securely login to the remote server. Follow the instructions of this command. After this, a public and private key file will be created respectively `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`.
+Copy the contents of your public SSH key, for example `~/.ssh/id_rsa.pub`, to the VM instance.
 
-Copy the contents of `~/.ssh/id_rsa.pub` to the VM instance.
+If you don't have a key yet, this is how you can create one:
+
+> (Optional) Use `ssh-keygen` to generate a private and public ssh key-pair. This is used to securely login to the remote server. Follow the instructions of this command. After this, a public and private key file will be created respectively `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`.
 
 #### 5. Test your connection
 
