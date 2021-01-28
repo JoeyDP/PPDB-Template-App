@@ -79,8 +79,10 @@ nosetests
 
 Follow these steps to create a GCP compute instance.
 
-#### 1. Create one GCP project and give every team member access
-Via the console <https://console.cloud.google.com/>, you can create a project and add your team members.
+#### 1. Access your GCP project and give every team member access
+Provide a `@gmail.com` email address via the assignment on Blackboard. This account will be added to a GCP project that you can find via the console: <https://console.cloud.google.com/>.
+
+Before continuing, add your team members to this project as well through the `IAM & Admin > IAM` menu.
 
 #### 2. Create a Compute instance (VM)
 
@@ -178,15 +180,15 @@ sudo ln -s /home/app/PPDB-Template-App/nginx/webapp /etc/nginx/sites-available/
 sudo ln -s /home/app/PPDB-Template-App/nginx/webapp /etc/nginx/sites-enabled/
 ```
 
-The contents of this file can be changed for your setup. For example change the IP address to your external IP and add the correct DNS name (`team[x].ppdb.me`)
+The contents of this file can be changed for your setup. For example change the IP address to your external IP and add the correct DNS name (`team[x].ua-ppdb.me`)
 ```
 server {
     listen 80;
-    server_name 0.0.0.0 ppdb.me;
+    server_name 0.0.0.0 team[x].ua-ppdb.me;
 
-location / {
-  include proxy_params;
-  proxy_pass http://unix:/home/app/PPDB-Template-App/src/ProgDBTutor/webapp.sock;
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/app/PPDB-Template-App/src/ProgDBTutor/webapp.sock;
     }
 }
 ```
