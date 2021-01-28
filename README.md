@@ -11,7 +11,7 @@ We depend on the following technologies:
 ### Quick start ###
 The implementation is written in Python.
 
-#### 1. Postgres database and Python interface (server version may vary)
+#### 1. Postgres database and Python interface
 ```bash
 sudo apt install postgresql python-psycopg2
 ```
@@ -84,6 +84,7 @@ Provide a `@gmail.com` email address via the assignment on Blackboard. This acco
 
 Before continuing, add your team members to this project as well through the `IAM & Admin > IAM` menu.
 
+
 #### 2. Create a Compute instance (VM)
 
 These screenshots explain how to create a VM instance from the menu `Compute Engine > VM Instances`. Feel free to change any settings, this is only a suggestion, but make sure your instance doesn't use significantly more budget than the given example.
@@ -108,7 +109,7 @@ The steps below indicate the changed settings. Screenshots are added to clarify.
 ![create vm3](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create3.png?raw=true)
 
  - Set a static external IP for the server.
- - (Optionally) add the reverse DNS entry `team[x].ua-ppdb.me` where `[x]` is your team number.
+ - (Optionally) add the reverse DNS entry `team[x].ua-ppdb.me` where `[x]` is your team number. This subdomain name will be coupled to your server by the teaching assistant after you finish setting up the instance.
 
 ![create vm4](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create4.png?raw=true)
 
@@ -137,6 +138,7 @@ From the network configuration, you can create a new firewall rule if you want t
 
 ![firewall](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/firewall_create.png?raw=true)
 
+
 #### 4. Add SSH keys
 
 In the VM settings, you can add SSH keys for each team member.
@@ -146,6 +148,7 @@ Copy the contents of your public SSH key, for example `~/.ssh/id_rsa.pub`, to th
 If you don't have a key yet, this is how you can create one:
 
 > (Optional) Use `ssh-keygen` to generate a private and public ssh key-pair. This is used to securely login to the remote server. Follow the instructions of this command. After this, a public and private key file will be created respectively `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`.
+
 
 #### 5. Test your connection
 
@@ -160,15 +163,16 @@ You should now be able to connect to the server with `ssh [username]@[external i
 > Then you can connect simply with `ssh ppdb`
 
 
-
 ### Run on GCP using nginx and gunicorn
 
 These steps demonstrate how to run this application with nginx. They are to be executed in addition to the setup in quick start. Instead of running the built in Flask debug server, we use an industrial grade webserver and reverse proxy server: nginx.
+
 
 #### 1. Install dependencies
 ```bash
 sudo apt install nginx
 ```
+
 
 #### 2. Create user to run application
 ```bash
@@ -176,12 +180,15 @@ sudo useradd -m -s /bin/bash app
 sudo su - app
 ```
 
+
 #### 3. Clone the application in /home/app
 ```bash
 git clone https://github.com/JoeyDP/PPDB-Template-App.git
 ```
 
+
 #### 4. Follow Quick start to setup the project
+
 
 #### 5. Test if wsgi entrypoint works
 Instead of using the Flask debug server, we use gunicorn to serve the application.
@@ -189,6 +196,7 @@ Instead of using the Flask debug server, we use gunicorn to serve the applicatio
 cd src/ProgDBTutor
 gunicorn --bind 0.0.0.0:5000 wsgi:app
 ```
+
 
 #### 6. Enable the webservice
 As an account with sudo acces (not app), copy the file `service/webapp.service` to `/etc/systemd/system/` and enable the service:
@@ -200,6 +208,7 @@ sudo systemctl enable webapp
 sudo systemctl start webapp
 ```
 A file `src/ProgDBTutor/webapp.sock` should be created.
+
 
 #### 7. Setup nginx
 Link or copy the nginx server block configuration file to the right nginx folders:
@@ -222,6 +231,7 @@ server {
 ```
 
 Test the configuration with `sudo nginx -t`.
+
 
 #### 8. Restart the server
 
