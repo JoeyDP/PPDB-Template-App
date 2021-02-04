@@ -94,7 +94,7 @@ These screenshots explain how to create a VM instance from the menu `Compute Eng
 The steps below indicate the changed settings. Screenshots are added to clarify.
 
  - Change Region to `europe-west1 (Belgium)`, zone doesn't matter much.
- - Set machine type to e2-small. This should more than suffice for the project.
+ - Set machine type to e2-medium. This should more than suffice for the project.
  - Set Boot disk size to 50Gb
 
 ![create vm1](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create1.png?raw=true)
