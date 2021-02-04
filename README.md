@@ -6,7 +6,7 @@ Tutorial for Programming Project Database students, or persons interested in cre
 
 We depend on the following technologies:
 
-![stack](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/stack.png?raw=true "Stack")
+![stack](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/stack.png?raw=true "Stack")
 
 ### Quick start ###
 The implementation is written in Python.
@@ -69,11 +69,11 @@ nosetests
 
 
 ### Result ###
-![index](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_index.png?raw=true "Index page")
+![index](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/dbtutor_index.png?raw=true "Index page")
 
-![rest](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_rest.png?raw=true "Output rest service")
+![rest](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/dbtutor_rest.png?raw=true "Output rest service")
 
-![quotes](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/dbtutor_quotes.png?raw=true "Viewing and adding quotes")
+![quotes](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/dbtutor_quotes.png?raw=true "Viewing and adding quotes")
 
 ### Create GCP instance
 
@@ -89,7 +89,7 @@ Before continuing, add your team members to this project as well through the `IA
 
 These screenshots explain how to create a VM instance from the menu `Compute Engine > VM Instances`. Feel free to change any settings, this is only a suggestion, but make sure your instance doesn't use significantly more budget than the given example.
 
-![create vm0](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create0.png?raw=true)
+![create vm0](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/vm_create0.png?raw=true)
 
 The steps below indicate the changed settings. Screenshots are added to clarify.
 
@@ -97,21 +97,21 @@ The steps below indicate the changed settings. Screenshots are added to clarify.
  - Set machine type to e2-medium. This should more than suffice for the project.
  - Set Boot disk size to 50Gb
 
-![create vm1](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create1.png?raw=true)
+![create vm1](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/vm_create1.png?raw=true)
 
  - Allow HTTP and HTTPS traffic
  - Open the `Management, security, disks, networking, sole tenancy` menu.
 
-![create vm2](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create2.png?raw=true)
+![create vm2](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/vm_create2.png?raw=true)
 
  - Under Networking, edit the default network interface.
 
-![create vm3](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create3.png?raw=true)
+![create vm3](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/vm_create3.png?raw=true)
 
  - Set a static external IP for the server.
  - (Optionally) add the reverse DNS entry `team[x].ua-ppdb.me` where `[x]` is your team number. This subdomain name will be coupled to your server by the teaching assistant after you finish setting up the instance.
 
-![create vm4](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/vm_create4.png?raw=true)
+![create vm4](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/vm_create4.png?raw=true)
 
 
 #### 3. (Optional) Set static IP address and add Firewall rule
@@ -120,23 +120,23 @@ If you forgot to set the static IP address, you can still edit this after the in
 
 In the settings of your instance, under network iterfaces, click `View details`.
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/instance.png?raw=true)
+![create vm](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/instance.png?raw=true)
 
 This brings you to the network configuration page.
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/network_overview.png?raw=true)
+![create vm](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/network_overview.png?raw=true)
 
 #### 3.1 Set static IP address
 
 From the network configuration, you can set the external IP address to static:
 
-![create vm](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/network_static.png?raw=true)
+![create vm](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/network_static.png?raw=true)
 
 #### 3.2 Add Firewall rule for debug server
 
 From the network configuration, you can create a new firewall rule if you want to run the debug server on port `5000`:
 
-![firewall](https://github.com/joeydp/PPDB-Template-App/blob/master/doc/GCP/firewall_create.png?raw=true)
+![firewall](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/firewall_create.png?raw=true)
 
 
 #### 4. Add SSH keys
