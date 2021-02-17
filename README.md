@@ -109,7 +109,7 @@ The steps below indicate the changed settings. Screenshots are added to clarify.
 ![create vm3](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/vm_create3.png?raw=true)
 
  - Set a static external IP for the server.
- - (Optionally) add the reverse DNS entry `team[x].ua-ppdb.me` where `[x]` is your team number. This subdomain name will be coupled to your server by the teaching assistant after you finish setting up the instance.
+ - After the setup, the domain name `teamX.ua-ppdb.me` (with 'X' replaced by your team number) will be coupled to your server by the teaching assistant.
 
 ![create vm4](https://github.com/JoeyDP/PPDB-Template-App/blob/master/doc/GCP/vm_create4.png?raw=true)
 
